@@ -1,7 +1,8 @@
 export interface HostList {
   id: number;
-  host: string;
+  host: number;
   reason: string;
+  name:string;
   time_added: Date;
 }
 
@@ -12,6 +13,7 @@ export interface Host {
   original_ip: string;
   threat: boolean;
   created_at:Date;
+  on_list:string;
 }
 
 export interface Threat {

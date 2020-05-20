@@ -19,7 +19,7 @@
       <nb-list-item class="item" *ngFor="let item of threats;">
 
         <span>{{ item.id }} </span>
-        <span>{{ item.host_source.fqd_name }}</span>
+        <span style="overflow-wrap: anywhere">{{ item.host_source.fqd_name }}</span>
         <span *ngIf="smallSize!='small'"  style="overflow-wrap: anywhere">{{ item.threat_details }}</span>
         <span>
            <button nbButton [status]="'warning'" ghost>

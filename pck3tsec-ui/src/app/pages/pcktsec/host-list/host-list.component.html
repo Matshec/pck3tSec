@@ -12,7 +12,7 @@
         <b>  <span>IP</span></b>
         <b>  <span>Date</span></b>
         <b> <span>Threat</span></b>
-        <b> <span>Blocked</span></b>
+        <b> <span>On List</span></b>
       </nb-list-item>
 
 
@@ -21,24 +21,29 @@
         <span>{{ item.id }}</span>
         <span style="overflow-wrap: anywhere">{{ item.fqd_name }}</span>
         <span>{{ item.original_ip }}</span>
-        <span>{{ item.created_at }}</span>
-        <span *ngIf="item.threat">
+        <span>{{ item.created_at | date: 'hh:mm dd/MM/yy' }}</span>
+        <span *ngIf="item.threat && !item.blocked">
            <button nbButton [status]="'danger'" ghost>
             Danger
           </button>
-        </span>
-        <span *ngIf="!item.threat">
-          <button nbButton [status]="'success'" ghost>
-            OK
-          </button>
-
         </span>
         <span *ngIf="item.blocked">
            <button nbButton [status]="'danger'" ghost>
             BLOCKED
           </button>
         </span>
-        <span *ngIf="!item.blocked">
+        <span *ngIf="!item.threat && !item.blocked">
+          <button nbButton [status]="'success'" ghost>
+            OK
+          </button>
+
+        </span>
+        <span *ngIf="item.on_list!='No'">
+           <button nbButton [status]="'info'" ghost>
+            {{item.on_list}}LIST
+          </button>
+        </span>
+        <span *ngIf="item.on_list=='No'">
            <button (click)="addToList(item)"   nbButton outline>
             Add to list
           </button>

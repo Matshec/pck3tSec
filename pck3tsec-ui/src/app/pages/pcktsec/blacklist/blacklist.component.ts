@@ -22,7 +22,13 @@ export class BlacklistComponent extends PcktsecListComponent implements OnInit {
   }
   fetchList(){
     this.hostService.getBlackList()
-      .subscribe(res=>this.hosts=res)
+      .subscribe(res=>{
+        this.hosts=res
+        this.hostService.getHosts().subscribe(r=>{
+          this.hosts.forEach(h=>h.name = r.find(rh=>rh.id==h.host)?.fqd_name)
+        })
+
+      })
   }
 
   remove(host){

@@ -1,6 +1,6 @@
 
 <nb-card-front>
-  <nb-card size="small">
+  <nb-card size="large">
     <nb-card-header>
       <span>Blacklist</span>
 
@@ -18,7 +18,7 @@
       <nb-list-item class="item" *ngFor="let item of hosts;">
 
         <span>{{ item.id }}</span>
-        <span>{{ item.host }}</span>
+        <span style="overflow-wrap: anywhere">{{ item.name }}</span>
         <span>{{ item.reason }}</span>
         <span>{{ item.time_added | date: 'dd/MM/yy' }}</span>
         <span>

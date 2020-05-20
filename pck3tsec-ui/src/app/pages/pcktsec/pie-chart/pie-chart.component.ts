@@ -19,7 +19,7 @@ export class PieChartComponent {
     this.themeSubscription = this.theme.getJsTheme().subscribe(config => {
 
       this.hostService.getHosts().subscribe(res=>{
-        let threat = res.filter(r=>r.threat).length
+        let threat = res.filter(r=>r.threat || r.blocked).length
         let nthreat = res.filter(r=>!r.threat).length
 
 

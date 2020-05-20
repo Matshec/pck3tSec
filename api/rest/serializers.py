@@ -47,3 +47,18 @@ class BlackListSerializer(serializers.ModelSerializer):
                                                 reason=validated_data['reason'],
                                                 color=ListColor.BLACK.value)
 
+
+class WhiteListSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = models.ManageList
+        fields = ['id', 'host', 'reason', 'time_added']
+
+    def validate_color(self, value):
+        if value != ListColor.WHITE.value:
+            raise serializers.ValidationError('it is not whitelist entry')
+        return value
+
+    def create(self, validated_data):
+        return models.ManageList.objects.create(host_id=validated_data['host'].id,
+                                                reason=validated_data['reason'],
+                                                color=ListColor.WHITE.value)

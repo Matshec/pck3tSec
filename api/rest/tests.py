@@ -17,6 +17,10 @@ class RESTTests(TestCase):
         'fqd_name': 'cats.com',
         'original_ip': '123.154.154.1'
     }
+    host3 = {
+        'fqd_name': 'dogs.com',
+        'original_ip': '123.154.154.43'
+    }
     threat = {
         'threat_type': ThreatType.HOST.value,
         'threat_details': 'some detals',
@@ -33,21 +37,27 @@ class RESTTests(TestCase):
         'reason': 'some',
         'color': ListColor.BLACK.value
     }
-
+    whitelist = {
+        'host_id': 3,
+        'reason': 'test white reason',
+        'color': ListColor.WHITE.value
+    }
 
     def setUp(self) -> None:
         h1 = Host.objects.create(**self.host1)
         Host.objects.create(**self.host2)
+        Host.objects.create(**self.host3)
         Threat.objects.create(**self.threat)
         Stats.objects.create(**self.stat)
         ManageList.objects.create(**self.blacklist)
+        ManageList.objects.create(**self.whitelist)
         h1.blocked = True
         h1.save()
 
     def test_get_hosts(self):
         url = reverse('api-hosts')
         res = self.client.get(url)
-        self.assertEqual(2, len(res.json()))
+        self.assertEqual(3, len(res.json()))
 
     def test_get_threats(self):
         url = reverse('api-threats')
@@ -79,3 +89,26 @@ class RESTTests(TestCase):
         url = reverse('api-blacklists')
         res = self.client.get(url)
         self.assertEqual(1, len(res.json()))
+
+    def test_get_whitelist(self):
+        url = reverse('api-whitelists')
+        res = self.client.get(url)
+        self.assertEqual(1, len(res.json()))
+
+    def test_delete_whitelist(self):
+        url = reverse('api-whitelist-item', args=(2,))
+        res = self.client.delete(url)
+        self.assertEqual(status.HTTP_204_NO_CONTENT, res.status_code)
+
+    def test_post_whitelist(self):
+        url = reverse('api-whitelists')
+        res = self.client.post(url, {'host': 2, 'reason': 'some reason'})
+        self.assertEqual(status.HTTP_201_CREATED, res.status_code)
+
+    def test_whitelist_to_blacklist_collision(self):
+        url = reverse('api-whitelists')
+        res = self.client.post(url, {'host': 1, 'reason': 'some'})
+        self.assertEqual(status.HTTP_400_BAD_REQUEST, res.status_code)
+        url = reverse('api-blacklists')
+        res = self.client.post(url, {'host': 3, 'reason': 'some'})
+        self.assertEqual(status.HTTP_400_BAD_REQUEST, res.status_code)

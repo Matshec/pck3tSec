@@ -1,14 +1,25 @@
 from rest_framework import serializers
 from rest import models
 from rest.enum_classes import ListColor
-import sys
 from rest.host_blocker import HostBlocker
 
 
+class ManagelistColorSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = models.ManageList
+        fields = ['color']
+
+
 class HostSerializer(serializers.ModelSerializer):
+    on_list = serializers.SerializerMethodField()
+
     class Meta:
         model = models.Host
         fields = serializers.ALL_FIELDS
+
+    def get_on_list(self, obj):
+        list = models.ManageList.objects.filter(host_id=obj.id)
+        return list.get().color if list.exists() else "No"
 
 
 class ThreatSerializer(serializers.ModelSerializer):

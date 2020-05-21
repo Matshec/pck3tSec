@@ -64,7 +64,7 @@ class CriticalTest(ABC, TestCase):
         try:
             db_conf = self.pre_test()
             self.test()
-            self.post_test(db_conf)
+            # self.post_test(db_conf)
         except KeyboardInterrupt:
             self.stop_app_threat()
 

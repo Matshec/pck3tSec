@@ -1,0 +1,1 @@
+docker exec backend python testing/traffic_test.py 5

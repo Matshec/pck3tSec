@@ -25,7 +25,11 @@ class PacketReader:
         """
         logger.info("starting to sniff packets")
          # TODO filter all outcoming packets
-        self.sniffer = AsyncSniffer(session=TCPSession, prn=self._store, iface=self.interface, count=count, store=False)
+        if self.interface is None:
+            self.sniffer = AsyncSniffer(session=TCPSession, prn=self._store, count=count,
+                                        store=False)
+        else:
+            self.sniffer = AsyncSniffer(session=TCPSession, prn=self._store, iface=self.interface, count=count, store=False)
         self.sniffer.start()
 
     def get_packets(self) -> list:

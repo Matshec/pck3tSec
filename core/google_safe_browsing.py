@@ -8,6 +8,9 @@ logger = logging.getLogger()
 
 
 class GoogleSafeBrowsing:
+    """
+    Wrapper for google safe browsing api
+    """
 
     def __init__(self, api_key: str):
         self.api_key = api_key
@@ -23,6 +26,11 @@ class GoogleSafeBrowsing:
         return [{'url': x} for x in urls]
 
     def api_call(self, urls: List[str]) -> Tuple[bool, Dict]:
+        """
+        Make api call to google save browsing and check if urls are safe or a threat
+        :param urls: list of urls to check
+        :return: (is_safe, details) tuple with bool value is url safe, if not details of the threat
+        """
         logger.info("api call to google for host {}".format(urls))
         self.request_template['threatInfo']['threatEntries'] = self._prepare_threat_entries(urls)
         response = requests.post(self.url, json=self.request_template, headers=self.headers)
@@ -33,8 +41,3 @@ class GoogleSafeBrowsing:
         details = json.loads(response.text)
         return not bool(details), details
 
-
-if __name__ == '__main__':
-    google_safe = GoogleSafeBrowsing("AIzaSyDyYREKVRoPgXSFvcRZuqFGZHlSFymDa80")
-    r = google_safe.api_call(["testsafebrowsing.appspot.com/s/malware.html"])
-    print(r)

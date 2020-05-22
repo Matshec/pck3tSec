@@ -12,13 +12,23 @@ logger = logging.getLogger()
 
 
 class ThreatObserver(IObserver):
+
+    """
+    React to threat by blocking host and saving threat data in database
+    """
     def __init__(self):
         self.blocker = HostBlocker()
 
     def update(self, host: str, threat_details: Dict, ip: str):
+        """
+        Update values in database, and block host if is threat
+        :param host: host to save
+        :param threat_details: optional detial about the threat
+        :param ip: host ip
+        """
         http_path = host if '/' in host else ""
         host_name = host.split('/')[0]
-        host_db, created = Host.objects.get_or_create(fqd_name=host_name, original_ip=ip) # is_threat=True
+        host_db, created = Host.objects.get_or_create(fqd_name=host_name, original_ip=ip)
 
         db_threat = Threat(
             threat_type=ThreatType.HOST.value,

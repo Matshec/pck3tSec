@@ -14,8 +14,7 @@ logger = logging.getLogger(__name__)
 
 class HostAnalyzer(Analyzer, IObservable):
     """
-    for now we are onyl considering destination hosts for ip packets and
-    host/path for http layer
+    Analyze destination host to scan for threats
     """
 
     def __init__(self, google_safe: GoogleSafeBrowsing):
@@ -48,7 +47,13 @@ class HostAnalyzer(Analyzer, IObservable):
         host_path = f"{host}{path}"
         return host_path
 
-    def is_host_safe(self, host: str, ip:str) -> Tuple[bool, Dict]:
+    def is_host_safe(self, host: str, ip: str) -> Tuple[bool, Dict]:
+        """
+        Check if given host is safe
+        :param host: host to check
+        :param ip: host ip
+        :return: (is_safe, detail) is host safe and if not details why - details are optional
+        """
         ret_value = (True, {})
         if host not in self.safe_cache:
             logger.info(f"api call  for host {host}")
@@ -62,6 +67,10 @@ class HostAnalyzer(Analyzer, IObservable):
         return ret_value
 
     def analyze(self, packet):
+        """
+        Analyze packet ip and http layers to extract host and check for safety
+        :param packet: net packet
+        """
         logger.debug("host analyzer packet {}".format(packet.show))
         host = None
         if packet.haslayer(http.HTTPRequest):

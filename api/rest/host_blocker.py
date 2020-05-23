@@ -20,10 +20,7 @@ class HostBlocker:
         self.add_host_to_ip_tables(host_ip)
 
     def unblock_host(self, host_ip: str):
-        try:
-            self._validate_host(host_ip)
-        except ValueError:
-            logger.error(f'Invalid hostname found {host_ip}')
+        self._validate_host(host_ip)
         logger.info(f'Unblocking host {host_ip}')
         self.remove_host_from_ip_tables(host_ip)
 
@@ -38,7 +35,7 @@ class HostBlocker:
 
     def _validate_host(self, host):
         if not self.IP_REGEX.match(host):
-            raise ValueError('bad host format - should be IPv4')
+            logger.error(f'Bad host format - should be IPv4 {host}')
 
 
     def add_host_to_ip_tables(self, host_ip: str):

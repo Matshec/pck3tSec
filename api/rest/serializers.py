@@ -43,7 +43,10 @@ class BlackListSerializer(serializers.ModelSerializer):
             host.blocked = True
             host.save()
             blocker.block_host(host.original_ip)
+        if 'reason' in validated_data:
+            reason = validated_data['reason']
+        else:
+            reason = ''
         return models.ManageList.objects.create(host_id=validated_data['host'].id,
-                                                reason=validated_data['reason'],
+                                                reason=reason,
                                                 color=ListColor.BLACK.value)
-

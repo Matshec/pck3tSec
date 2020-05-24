@@ -23,13 +23,8 @@ export class ThreatsChartComponent implements OnInit {
     this.data = {
       labels: ['January', 'February', 'March', 'April', 'May', 'June', 'July'],
       datasets: [{
-        data: [65, 59, 80, 81, 56, 55, 40],
+        data: [25, 19, 10, 21, 36, 45, 40],
         label: 'Detected threats',
-        backgroundColor: NbColorHelper.hexToRgbA(colors.primary, 0.3),
-        borderColor: colors.primary,
-      }, {
-        data: [28, 48, 40, 19, 86, 27, 90],
-        label: 'Blocked hosts',
         backgroundColor: NbColorHelper.hexToRgbA(colors.danger, 0.3),
         borderColor: colors.danger,
       }

@@ -36,6 +36,6 @@ note that critical test can  only be run in docker
 `> cd api; ./manage.py test`
 
 ### how to run unittest
- `> PYTHONPATH="$PWD/api"; python -m unittest discover -s core/tests -p "*tests.py"`
+ `> export PYTHONPATH="$PWD/api"; python -m unittest discover -s core/tests -p "*tests.py"`
 
 

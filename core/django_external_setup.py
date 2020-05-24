@@ -14,6 +14,7 @@ Use this module when you need to set up django for external modul/ app to use OR
 
 
 def _add_api_to_path() -> pathlib.Path:
+    """Add `api` folder to  pythonpath"""
     this_path = os.path.abspath(__file__)
     path = pathlib.Path(this_path)
     grandparent = path.parent.parent

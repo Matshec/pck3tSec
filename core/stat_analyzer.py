@@ -11,6 +11,10 @@ logger = logging.getLogger()
 
 
 class StatAnalyzer(Analyzer):
+    """
+    Analyzes packets, and creates statistics, gathers information about what host are accessed and
+    when was last time particular host was accessed
+    """
 
     def __init__(self):
         Analyzer.__init__(self)
@@ -21,6 +25,7 @@ class StatAnalyzer(Analyzer):
         self.observers.append(observer)
 
     def finish(self):
+        """Stop analyzer"""
         logger.info("stopping stat analyzer")
         self.db_cache.flush()
         self.db_cache.destroy()
@@ -29,7 +34,7 @@ class StatAnalyzer(Analyzer):
         if packet.haslayer(inet.IP):
             return packet.getlayer(inet.IP)
 
-    def get_hostname(self, packet, ip: str) -> Optional[str]:
+    def _get_hostname(self, packet, ip: str) -> Optional[str]:
         if packet.haslayer(http.HTTPRequest):
             return packet.getlayer(http.HTTPRequest).Host.decode('utf-8')
         return self.resolve_ip_to_hostname(ip)
@@ -52,11 +57,18 @@ class StatAnalyzer(Analyzer):
         logger.info(f"stats updated on host {hostname}")
 
     def analyze(self, packet):
+        """
+        Analyze packet, get data about the host and access time, access time is saved with accuracy of 20s.
+        Save gatherd info in database
+
+        :param packet: net packet to process
+        """
         ip_layer = self._get_ip_layer(packet)
         if ip_layer:
             ip = self._get_ip_of_foreign_host_bidirect(ip_layer)
-            hostname = self.get_hostname(packet, ip)
+            hostname = self._get_hostname(packet, ip)
             if hostname and not ip.endswith('255'):
                 self.db_cache[hostname] = ip
             else:
                 logger.info("hostname empty - skipping")
+

@@ -12,12 +12,9 @@ def main(iface):
     django_external_setup()
     load_test = traffic_test.NormalTrafficTest()
     threat_test = critical.HostThreatTest(iface)
-    try:
-        threat_test.perform_test()
-    except KeyboardInterrupt:
-        threat_test.stop_app_threat()
-    finally:
-        threat_test.stop_app_threat()
+    whitelist_test = critical.HostThreatTestWhitelist(iface)
+    whitelist_test.perform_test()
+    threat_test.perform_test()
 
 
 

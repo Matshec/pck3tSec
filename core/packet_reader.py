@@ -6,7 +6,8 @@ logger = logging.getLogger()
 
 
 class PacketReader:
-    """ 
+    """
+    Sniff packets on given interface
     This class needs root privileges to run
     """
     def __init__(self, interface: str):

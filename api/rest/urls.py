@@ -8,6 +8,8 @@ urlpatterns = [
     path('stats/', views.StatsListView.as_view(), name='api-stats'),
     path('blacklist/', views.BlackListView.as_view(), name='api-blacklists'),
     path('blacklist/<int:pk>/', views.BlackListDetailView.as_view(), name='api-blacklist-item'),
+    path('whitelist/', views.WhiteListView.as_view(), name='api-whitelists'),
+    path('whitelist/<int:pk>/', views.WhiteListDetailView.as_view(), name='api-whitelist-item'),
 ]
 
 urlpatterns = format_suffix_patterns(urlpatterns)

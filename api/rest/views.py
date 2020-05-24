@@ -35,3 +35,13 @@ class BlackListDetailView(generics.DestroyAPIView):
         host.save()
         blocker.unblock_host(host.original_ip)
         super().perform_destroy(instance)
+
+
+class WhiteListView(generics.ListCreateAPIView):
+    queryset = ManageList.objects.filter(color=ListColor.WHITE.value)
+    serializer_class = WhiteListSerializer
+
+
+class WhiteListDetailView(generics.DestroyAPIView):
+    queryset = ManageList.objects.filter(color=ListColor.WHITE.value)
+    serializer_class = WhiteListSerializer

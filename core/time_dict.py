@@ -127,7 +127,7 @@ class TimeDict(UserDict):
         self.updater.flush()
 
     def destroy(self):
-        self.updater.active.clear()
+        self.updater.join()
 
     def __setitem__(self, key, value):
         self._check_exception()

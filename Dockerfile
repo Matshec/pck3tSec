@@ -11,4 +11,4 @@ ENV PATH=${PATH}:/app
 COPY ./ /app
 WORKDIR app
 RUN mv api/db.sqlite3 api/db_mock.sqlite3 && api/manage.py migrate
-CMD api/manage.py runserver 0.0.0.0:8000 & ./runcore.py eth0
+CMD ["/bin/sh", "start.sh"]

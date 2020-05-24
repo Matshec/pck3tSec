@@ -51,5 +51,3 @@ class HostBlocker:
             logger.info(f'deleting rule form INPUT for ip {host_ip}')
             subprocess.run([self.iptables, '-D', 'INPUT', input_id])
         self._save_changes()
-
-

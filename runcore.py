@@ -8,6 +8,7 @@ import argparse
 def config_paths():
     cwd = os.path.dirname(os.path.abspath(__file__))
     api_path = os.path.join(cwd, 'api')
+    sys.path.append(cwd)
     sys.path.append(api_path)
 
 

@@ -5,11 +5,12 @@ from runcore import config_paths
 config_paths()
 
 from core.django_external_setup import django_external_setup
-from testing import critical
+from testing import critical, traffic_test
 
 
 def main(iface):
     django_external_setup()
+    load_test = traffic_test.NormalTrafficTest()
     threat_test = critical.HostThreatTest(iface)
     whitelist_test = critical.HostThreatTestWhitelist(iface)
     whitelist_test.perform_test()

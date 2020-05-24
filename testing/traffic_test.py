@@ -20,6 +20,7 @@ set_lock = threading.Lock()
 logger_lock = threading.Lock()
 thread_count = 5
 
+
 def is_absolute(url):
     return bool(urlparse(url).netloc)
 
@@ -62,8 +63,10 @@ def generate_traffic():
 
 if __name__ == '__main__':
     parser = argparse.ArgumentParser()
-    parser.add_argument('thread_count')
+    parser.add_argument('thread_count', type=int)
+    parser.add_argument('test_time', type=int)
     args = parser.parse_args()
+    timeout = time.time() + 60 * int(args.test_time)
     for i in range(int(args.thread_count)):
         t = multiprocessing.Process(target=generate_traffic)
         t.start()

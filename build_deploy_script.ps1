@@ -5,4 +5,6 @@ $network_name = "malnet"
 docker build -t $image_name .
 docker stop $container_name
 docker rm $container_name
-docker run --cap-add=NET_ADMIN --name $container_name --network $network_name -p 8123:8000 $image_name
+Set-Location api
+docker run --cap-add=NET_ADMIN --name $container_name --network $network_name -p 8123:8000 --mount source=db.sqlite3,target=/app/api/db.sqlite3 $image_name
+Set-Location ..
